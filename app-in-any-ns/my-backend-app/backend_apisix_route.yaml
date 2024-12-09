@@ -1,0 +1,26 @@
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: backend-app-route
+  namespace: backend-app
+spec:
+  http:
+ - name: http-rule-greet
+   match:
+     hosts:
+     - localhost
+     paths:
+       - /greet
+   backends:
+   - serviceName: backend-svc
+     servicePort: 8081
+ - name: http-rule-hello
+   match:
+     hosts:
+     - localhost
+     paths:
+       - /hello
+   backends:
+   - serviceName: backend-svc
+     servicePort: 8081
+  
