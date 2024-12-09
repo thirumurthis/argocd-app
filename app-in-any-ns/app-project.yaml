@@ -13,7 +13,7 @@ spec:
    - '*'
   sourceNamespaces:
    - env-*
-  clusterResourceWhitlist:
+  clusterResourceWhitelist:
    - group: '*'
      kind: '*'
  
