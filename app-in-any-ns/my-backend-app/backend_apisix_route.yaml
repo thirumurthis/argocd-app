@@ -22,5 +22,5 @@
 #       - /hello
 #   backends:
 #   - serviceName: backend-svc
-     servicePort: 8081
+#     servicePort: 8081
   
