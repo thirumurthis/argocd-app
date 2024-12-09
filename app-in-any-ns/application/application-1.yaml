@@ -1,1 +1,17 @@
 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-in-any-ns-app-1
+  namespace: argocd
+  finalizers:
+   - resources-finalizer.argocd.argoproj.io
+spec:
+  project: app-in-any-ns-appproject
+  source:
+    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    targetRevision: HEAD
+    path: app-in-any-ns/my-app
+  destination:
+    server: https://172.19.0.4:6443  # fetched using kubectl get ep from target cluster (https://github.com/argoproj/argo-cd/issues/4204)
+    namespace: env-dev-0
