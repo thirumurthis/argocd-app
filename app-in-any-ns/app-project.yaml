@@ -12,5 +12,8 @@ spec:
   sourceRepos:
    - '*'
   sourceNamespaces:
-   - env-dev-0
+   - env-*
+  clusterResourceWhitlist:
+   - group: '*'
+     kind: '*'
  
