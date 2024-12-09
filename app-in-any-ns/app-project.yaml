@@ -6,8 +6,11 @@ metadata:
 spec:
   description: "parent argocd application project"
   destinations:
-  - namespace: env-dev-0
-    server: https://kubernetes.default.svc
+  # If namespace namespace and server not set to * currently seeing an issue when deploying argocd my-backend-application-1
+  # pplication destination server 'https://172.19.0.4:6443' and namespace 'env-dev-0' 
+  # do not match any of the allowed destinations in project 'app-in-any-ns-appproject'
+  - namespace: '*'
+    server: '*'
   # Allow manifests to deploy from any Git repos
   sourceRepos:
    - '*'
