@@ -4,8 +4,6 @@ kind: Application
 metadata:
   name: app-in-any-ns-app-1
   namespace: argocd
-  finalizers:
-   - resources-finalizer.argocd.argoproj.io
 spec:
   project: app-in-any-ns-appproject
   source:
