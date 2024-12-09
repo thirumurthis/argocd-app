@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: app-in-any-ns-parent
+  namespace: argocd
+spec:
+  description: "parent argocd application project"
+  destinations:
+  - namespace: env-dev-0
+    server: https://kubernetes.default.svc
+  # Allow manifests to deploy from any Git repos
+  sourceRepos:
+   - '*'
+  sourceNamespaces:
+   - env-dev-0
+ 
