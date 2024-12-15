@@ -11,5 +11,5 @@ spec:
     targetRevision: HEAD
     path: app-in-any-ns/my-backend-app/
   destination:
-    server: https://172.19.0.3:6443  # fetched using kubectl get ep from target cluster (https://github.com/argoproj/argo-cd/issues/4204)
+    server: https://172.19.0.4:6443  # fetched using kubectl get ep from target cluster (https://github.com/argoproj/argo-cd/issues/4204)
     namespace: env-dev-0
