@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-in-any-ns-app-1
+  name: app-in-any-ns-app-2
   namespace: argocd
 spec:
   project: app-in-any-ns-appproject
