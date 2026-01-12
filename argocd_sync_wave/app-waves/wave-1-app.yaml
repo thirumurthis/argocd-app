@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: app-l1-wave1-sw-6
-  namespace: &argons demo-app
+  namespace: &argons argocd
   annotations:
     argocd.argoproj.io/sync-wave: "6"
 spec:
