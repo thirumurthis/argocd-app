@@ -17,7 +17,6 @@ spec:
     namespace: *argons
   syncPolicy:
     automated:
-      enabled: true
       prune: true
       selfHeal: true
     syncOptions:
