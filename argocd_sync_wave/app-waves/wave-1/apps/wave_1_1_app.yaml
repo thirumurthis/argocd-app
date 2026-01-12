@@ -18,3 +18,38 @@ spec:
       restartPolicy: Never 
   # This ensures the job runs until it completes successfully
   backoffLimit: 4 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-l2-w1-c-sw-9
+  namespace: demo-app
+  annotations:
+    argocd.argoproj.io/sync-wave: "9"
+spec:
+  selector:
+    matchLabels:
+      app: nginx-app-l2-w1-w1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-app-l2-w1-w1
+    spec:
+      # Init containers run sequentially and must complete successfully before app containers start
+      initContainers:
+      - name: wait-for-duration
+        image: busybox
+        command: ["sh", "-c", "echo The current time is: $(date); sleep 20s; echo Wait complete.;"]      
+      # The main application container
+      containers:
+      - name: nginx-app-l2-w1-w1
+        image: nginx
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15 # Wait an additional 5 seconds after init containers finish before first probe
+          periodSeconds: 10
