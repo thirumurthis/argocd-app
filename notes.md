@@ -177,3 +177,57 @@ data:
   # Timeout settings
   timeout.reconciliation: 300s
 ```
+
+---
+- The copilot suggested child app of apps
+
+```yaml
+resource.customizations.health.argoproj.io_Application: |
+    hs = {}
+    hs.status = "Progressing"
+    hs.message = "Waiting for child application to be ready"
+
+    if obj.status == nil then
+      return hs
+    end
+
+    -- If sync is still running
+    if obj.status.operationState ~= nil then
+      if obj.status.operationState.phase == "Running" then
+        hs.status = "Progressing"
+        hs.message = "Child application sync in progress"
+        return hs
+      end
+
+      if obj.status.operationState.phase == "Failed" then
+        hs.status = "Degraded"
+        hs.message = "Child application sync failed"
+        return hs
+      end
+    end
+
+    -- Check sync status
+    if obj.status.sync ~= nil then
+      if obj.status.sync.status ~= "Synced" then
+        hs.status = "Progressing"
+        hs.message = "Child application not synced"
+        return hs
+      end
+    end
+
+    -- Check health status
+    if obj.status.health ~= nil then
+      if obj.status.health.status == "Healthy" then
+        hs.status = "Healthy"
+        hs.message = "Child application synced and healthy"
+        return hs
+      end
+
+      if obj.status.health.status == "Degraded" then
+        hs.status = "Degraded"
+        hs.message = obj.status.health.message or "Child application degraded"
+        return hs
+      end
+    end
+    return hs
+```
