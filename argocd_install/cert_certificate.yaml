@@ -1,0 +1,17 @@
+# argocd_certificate.yaml
+# deploy in argocd namespace
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: selfsigned-argocd-cert
+spec:
+  commonName: argocd.demo.com  
+  secretName: selfsigned-argocd-cert-secret
+  duration: 2160h
+  renewBefore: 360h
+  issuerRef:
+    name: selfsigned-argocd-ca-issuer # issuer resource name
+    kind: Issuer
+  dnsNames:
+    - argocd.demo.com  # dns name add this to hosts file for loopback address
+    - argocd.localhost

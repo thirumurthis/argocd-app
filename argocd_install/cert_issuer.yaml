@@ -1,0 +1,8 @@
+# argocd_issuer.yaml
+# deploy in argocd namespace
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: selfsigned-argocd-ca-issuer
+spec:
+  selfSigned: {}
