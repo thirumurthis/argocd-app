@@ -1,32 +1,30 @@
-```
+```sh
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.1/standard-install.yaml
 ```
 
-```
+```sh
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.19.2/cert-manager.yaml
 ```
 
-```
+```sh
 kubectl create ns argocd
 ```
 
-```
-
-
+```sh
 kubectl apply -n argocd  -k argocd_install/kustomize/
 ```
 
-```
+```sh
 helm repo add apisix https://charts.apiseven.com
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ```
 
-```
+```sh
 kubectl create ns apisix
 ```
 
-```
+```sh
 helm upgrade -i apisix apisix/apisix --namespace apisix \
 --set service.type=NodePort \
 --set service.http.enabled=true \
@@ -43,7 +41,8 @@ helm upgrade -i apisix apisix/apisix --namespace apisix \
 ```
 
 cd argocd_install
-```
+
+```sh
 kubectl -n argocd apply -f cert_issuer.yaml
 kubectl -n argocd apply -f cert_certificate.yaml
 kubectl -n argocd apply -f ingress_argocd.yaml
@@ -51,7 +50,7 @@ kubectl -n argocd apply -f ingress_argocd.yaml
 
 - To get the inital password use below command
 
-```
+```sh
 kubectl  -n argocd get secret/argocd-initial-admin-secret -ojsonpath={'.data.password'} | base64 -d; echo
 ```
 
@@ -60,7 +59,7 @@ kubectl  -n argocd get secret/argocd-initial-admin-secret -ojsonpath={'.data.pas
 
 - Create the application in the argocd
 
-```
+```sh
 cd argo_sync_wave
 
 kubectl -n argocd app_1.yaml
@@ -70,7 +69,7 @@ kubectl -n argocd app_1.yaml
 
 https://argo-cd.readthedocs.io/en/latest/operator-manual/health/
 
-```
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
