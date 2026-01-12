@@ -11,6 +11,8 @@ kubectl create ns argocd
 ```
 
 ```
+
+
 kubectl apply -n argocd  -k argocd_install/kustomize/
 ```
 
@@ -91,4 +93,87 @@ data:
       end
     end
     return hs
+```
+
+- below code could be used for health check based on Claude 
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  # Application health check
+  resource.customizations.health.argoproj.io_Application: |
+    hs = {}
+    hs.status = "Progressing"
+    hs.message = ""
+    
+    if obj.status ~= nil then
+      -- Check health status
+      if obj.status.health ~= nil then
+        hs.status = obj.status.health.status
+        if obj.status.health.message ~= nil then
+          hs.message = obj.status.health.message
+        end
+      end
+      
+      -- Must be synced
+      if obj.status.sync ~= nil and obj.status.sync.status ~= nil then
+        if obj.status.sync.status ~= "Synced" then
+          hs.status = "Progressing"
+          hs.message = "Sync status: " .. obj.status.sync.status
+          return hs
+        end
+      else
+        hs.status = "Progressing"
+        hs.message = "Waiting for sync status"
+        return hs
+      end
+      
+      -- Check for active operations
+      if obj.status.operationState ~= nil and obj.status.operationState.phase ~= nil then
+        local phase = obj.status.operationState.phase
+        if phase == "Running" then
+          hs.status = "Progressing"
+          hs.message = "Sync operation running"
+          return hs
+        elseif phase == "Failed" then
+          hs.status = "Degraded"
+          hs.message = "Sync operation failed"
+          return hs
+        elseif phase == "Terminating" then
+          hs.status = "Progressing"
+          hs.message = "Terminating"
+          return hs
+        end
+      end
+      
+      -- Only healthy if synced AND healthy AND no active operations
+      if hs.status == "Healthy" and 
+         obj.status.sync.status == "Synced" and
+         (obj.status.operationState == nil or 
+          obj.status.operationState.phase == "Succeeded") then
+        return hs
+      end
+      
+      -- Check if there are resources out of sync
+      if obj.status.summary ~= nil then
+        local summary = obj.status.summary
+        if summary.images ~= nil or summary.externalURLs ~= nil then
+          -- Additional checks can be added here
+        end
+      end
+    end
+    
+    hs.status = "Progressing"
+    hs.message = "Application not ready"
+    return hs
+  
+  # Timeout settings
+  timeout.reconciliation: 300s
 ```
