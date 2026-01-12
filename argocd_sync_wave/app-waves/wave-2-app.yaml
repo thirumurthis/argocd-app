@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-l1-wave2-sw-12
+  name: l1-wave2-sw-12
   namespace: &argons argocd
   annotations:
     argocd.argoproj.io/sync-wave: "12"
@@ -17,6 +17,7 @@ spec:
     namespace: *argons
   syncPolicy:
     automated:
+      enabled: true
       prune: true
       selfHeal: true
     syncOptions:

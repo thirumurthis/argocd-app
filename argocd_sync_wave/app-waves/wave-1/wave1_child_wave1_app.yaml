@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: l1-wave1-sw-6
+  name: l2-wave1-w1-sw-6
   namespace: &argons argocd
   annotations:
     argocd.argoproj.io/sync-wave: "6"
@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/thirumurthis/argocd-app.git
-    path: argocd_sync_wave/app-waves/wave-1
+    path: argocd_sync_wave/app-waves/wave-1/wave1-1
     targetRevision: HEAD
   destination:
     name: in-cluster
