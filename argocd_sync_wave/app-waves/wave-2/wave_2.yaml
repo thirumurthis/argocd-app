@@ -9,14 +9,12 @@ metadata:
 spec:
   template:
     spec:
-      serviceAccountName: argocd-server
       containers:
-        - name: sleep
-          image: ubuntu:latest
-          command:
-            - /bin/sh
-            - -c
-            - |
-              sleep 30s
-      restartPolicy: Never
-  backoffLimit: 1
+      - name: time-container
+        # Use a minimal image with the date command available
+        image: busybox
+        command: ["sh", "-c", "echo The current time is: $(date); sleep 30s"]
+      # Jobs must have a RestartPolicy of OnFailure or Never
+      restartPolicy: Never 
+  # This ensures the job runs until it completes successfully
+  backoffLimit: 4
