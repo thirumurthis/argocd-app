@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: parent-app
-  namespace: demo-ns
+  namespace: &argons demo-app
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
@@ -16,7 +16,7 @@ spec:
     targetRevision: HEAD
   destination:
     name: in-cluster
-    namespace: argocd
+    namespace: *argons
   syncPolicy:
     automated:
       prune: true

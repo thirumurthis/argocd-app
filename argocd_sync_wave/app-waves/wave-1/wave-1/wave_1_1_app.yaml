@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: job-l2-w1-j11-sleep-sw-8
-  namespace: demo-ns
+  namespace: demo-app
   annotations:
     argocd.argoproj.io/sync-wave: "8"
 spec:
