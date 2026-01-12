@@ -2,15 +2,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 1-sync-wave
-  namespace: argocd
+  name: parent-app
+  namespace: demo-ns
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "6"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
     repoURL: https://github.com/thirumurthis/argocd-app.git
-    path: argocd_sync_wave/wave-1/wave-1
+    path: argocd_sync_wave/app-waves
     targetRevision: HEAD
   destination:
     name: in-cluster

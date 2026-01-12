@@ -2,10 +2,10 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: 0-wave-0-sleep
-  namespace: argocd
+  name: job-l1-w2-sw-14
+  namespace: demo-ns
   annotations:
-    argocd.argoproj.io/sync-wave: "4"
+    argocd.argoproj.io/sync-wave: "14"
 spec:
   template:
     spec:
